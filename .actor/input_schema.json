@@ -1,0 +1,48 @@
+{
+  "title": "Allegro Product Scraper",
+  "description": "Scrape Allegro product listings by URL or keyword. Provide an Allegro listing, category or offer URL, or enter a keyword.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startUrl": {
+      "title": "Allegro URL",
+      "type": "string",
+      "description": "Listing, category or offer URL. When filled in, it takes priority over the keyword.",
+      "editor": "textfield"
+    },
+    "keyword": {
+      "title": "Keyword",
+      "type": "string",
+      "description": "Search phrase used when no Allegro URL is provided.",
+      "editor": "textfield",
+      "default": "tabletki do zmywarki",
+      "prefill": "tabletki do zmywarki"
+    },
+    "results_wanted": {
+      "title": "Maximum results",
+      "type": "integer",
+      "description": "Maximum number of offers to save.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 5000,
+      "default": 20
+    },
+    "max_pages": {
+      "title": "Maximum pages",
+      "type": "integer",
+      "description": "Maximum number of listing pages to request, starting from the page in the URL.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10
+    },
+    "proxyConfiguration": {
+      "title": "Proxy configuration",
+      "type": "object",
+      "description": "No proxy is used by default. Add an Apify Proxy group or custom proxy URLs only if Allegro challenges a run.",
+      "editor": "proxy"
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

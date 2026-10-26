@@ -1,0 +1,29 @@
+{
+  "name": "allegro-product-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Scrape Allegro product listings and offers by URL or keyword.",
+  "main": "src/main.js",
+  "author": "Shahid Irfan",
+  "license": "ISC",
+  "scripts": {
+    "start": "node src/main.js",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "impit": "^0.14.7",
+    "patchright": "^1.64.2"
+  },
+  "devDependencies": {
+    "@apify/eslint-config": "^2.0.6",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.10",
+    "vitest": "^5.0.5"
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "offerId": {
+        "type": "string",
+        "title": "Offer ID",
+        "description": "Allegro offer identifier."
+      },
+      "productId": {
+        "type": "string",
+        "title": "Product ID",
+        "description": "Allegro catalogue product identifier, when available."
+      },
+      "title": {
+        "type": "string",
+        "title": "Title",
+        "description": "Offer title."
+      },
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "Offer URL."
+      },
+      "price": {
+        "type": "number",
+        "title": "Price",
+        "description": "Current price."
+      },
+      "currency": {
+        "type": "string",
+        "title": "Currency",
+        "description": "Price currency."
+      },
+      "originalPrice": {
+        "type": "number",
+        "title": "Original price",
+        "description": "Price before a discount, when shown."
+      },
+      "discountPercent": {
+        "type": "number",
+        "title": "Discount percent",
+        "description": "Calculated discount percentage."
+      },
+      "image": {
+        "type": "string",
+        "title": "Image",
+        "description": "Main image URL."
+      },
+      "images": {
+        "type": "array",
+        "title": "Images",
+        "description": "Additional image URLs.",
+        "items": { "type": "string" }
+      },
+      "sellerName": {
+        "type": "string",
+        "title": "Seller",
+        "description": "Seller or shop name."
+      },
+      "sellerLogin": {
+        "type": "string",
+        "title": "Seller login",
+        "description": "Seller account login."
+      },
+      "sellerRating": {
+        "type": "number",
+        "title": "Seller rating",
+        "description": "Seller positive feedback percentage."
+      },
+      "delivery": {
+        "type": "string",
+        "title": "Delivery",
+        "description": "Delivery information shown on the listing."
+      },
+      "rating": {
+        "type": "number",
+        "title": "Rating",
+        "description": "Product or seller rating."
+      },
+      "reviewsCount": {
+        "type": "number",
+        "title": "Reviews",
+        "description": "Number of ratings or reviews."
+      },
+      "condition": {
+        "type": "string",
+        "title": "Condition",
+        "description": "Item condition."
+      },
+      "parameters": {
+        "type": "object",
+        "title": "Parameters",
+        "description": "Offer parameters as name and value pairs.",
+        "additionalProperties": { "type": "string" }
+      },
+      "isSponsored": {
+        "type": "boolean",
+        "title": "Sponsored",
+        "description": "True when the offer is sponsored."
+      },
+      "isPromoted": {
+        "type": "boolean",
+        "title": "Promoted",
+        "description": "True when the offer is promoted."
+      },
+      "position": {
+        "type": "number",
+        "title": "Position",
+        "description": "Position in the saved result set."
+      },
+      "page": {
+        "type": "number",
+        "title": "Page",
+        "description": "Listing page where the offer was found."
+      },
+      "query": {
+        "type": "string",
+        "title": "Query",
+        "description": "Search phrase or category associated with the result."
+      },
+      "listingUrl": {
+        "type": "string",
+        "title": "Listing URL",
+        "description": "Listing page URL where the offer was found."
+      },
+      "scrapedAt": {
+        "type": "string",
+        "title": "Scraped at",
+        "description": "ISO timestamp of the run."
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "position",
+          "title",
+          "price",
+          "currency",
+          "sellerName",
+          "rating",
+          "reviewsCount",
+          "page",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "position": {
+            "label": "#",
+            "format": "number"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "price": {
+            "label": "Price",
+            "format": "number"
+          },
+          "currency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "sellerName": {
+            "label": "Seller",
+            "format": "text"
+          },
+          "rating": {
+            "label": "Rating",
+            "format": "number"
+          },
+          "reviewsCount": {
+            "label": "Reviews",
+            "format": "number"
+          },
+          "page": {
+            "label": "Page",
+            "format": "number"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

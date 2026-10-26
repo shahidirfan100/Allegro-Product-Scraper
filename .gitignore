@@ -1,0 +1,14 @@
+node_modules
+storage
+coverage
+.env
+*.log
+.DS_Store
+_discover*.cjs
+_proxy-test*.cjs
+_unblocker-test*.cjs
+_auth-test.cjs
+_session-scan.cjs
+_account-check.cjs
+allegro-*.html
+package-lock.json
