@@ -45,7 +45,7 @@ Allegro Product Scraper collects product offers from Allegro.pl, a large Polish 
 1. Open the Actor on Apify Store.
 2. Paste an Allegro listing, category, or offer URL in **Allegro URL**, or leave it empty and enter a **Keyword**.
 3. Set **Maximum results** and **Maximum pages** for the run.
-4. Leave the proxy field at its default Apify Proxy `StaticUS3` group. Allegro blocks direct and datacenter exits, so the residential group is what keeps runs working.
+4. Keep the default Apify Proxy `StaticUS3` group if your account has the static residential add-on. On the Free plan, switch the group to `UNBLOCKER` (see [Proxy options](#proxy-options)).
 5. Run the Actor and open the dataset when the run finishes.
 
 When both an Allegro URL and a keyword are present, the URL wins. The keyword is ignored.
@@ -58,7 +58,32 @@ When both an Allegro URL and a keyword are present, the URL wins. The keyword is
 | `keyword` | String | No | `tabletki do zmywarki` | Search phrase used when no URL is provided. |
 | `results_wanted` | Integer | No | `20` | Maximum number of offers to save. |
 | `max_pages` | Integer | No | `10` | Maximum listing pages to request, starting from the page in the URL. |
-| `proxyConfiguration` | Object | No | Apify Proxy, `StaticUS3` group | Proxy settings. Allegro blocks direct and datacenter exits, so the residential group is the default. |
+| `proxyConfiguration` | Object | No | Apify Proxy, `StaticUS3` group | Proxy settings. Use `UNBLOCKER` instead on the Free plan. |
+
+### Proxy options
+
+Allegro answers direct and datacenter exits with a DataDome block page, so the Actor needs a residential-class proxy. Pick the group that matches your plan:
+
+| Group | Availability | Price | Speed | Result |
+|-------|--------------|-------|-------|--------|
+| `StaticUS3` (default) | static residential add-on | per IP | 1-3 s per page | works |
+| `UNBLOCKER` | Free and paid plans | $1.5 per 1,000 requests | ~20 s per page | works |
+| `RESIDENTIAL` | Free and paid plans | $8 per GB | rotating exits | blocked by Allegro in testing |
+| `proxyUrls` | any plan, your own provider | your provider | your provider | depends on the exit |
+
+`UNBLOCKER` is the Free plan option. It terminates TLS to solve the challenge, and the Actor already disables certificate verification for it. One listing page is one request, so 200 offers cost well under one cent against the free monthly credit.
+
+```json
+{
+  "keyword": "tabletki do zmywarki",
+  "results_wanted": 20,
+  "max_pages": 2,
+  "proxyConfiguration": {
+    "useApifyProxy": true,
+    "apifyProxyGroups": ["UNBLOCKER"]
+  }
+}
+```
 
 ## Output Data
 
@@ -229,7 +254,7 @@ Yes. Apify datasets can be downloaded as CSV, Excel, JSON, XML, and other suppor
 
 ### Do I need a proxy?
 
-Yes. Allegro blocks direct and datacenter exits, so the Actor uses the Apify Proxy `StaticUS3` group by default. Keep the default, or enter your own residential proxy URLs if you have a better exit.
+Yes. Allegro blocks direct and datacenter exits. The Actor uses the Apify Proxy `StaticUS3` group by default. On the Free plan switch the group to `UNBLOCKER`, which is billed per request from the free monthly credit, or enter your own residential proxy URLs.
 
 ### Do I need to write code to run the Actor?
 

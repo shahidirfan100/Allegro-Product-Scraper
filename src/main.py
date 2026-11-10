@@ -218,7 +218,9 @@ async def main() -> None:
         groups = proxy_input.get('apifyProxyGroups') or proxy_input.get('groups') or []
         uses_unblocker = 'UNBLOCKER' in groups
 
-        fetcher = AllegroFetcher(proxy_configuration, use_session=not uses_unblocker)
+        fetcher = AllegroFetcher(
+            proxy_configuration, use_session=not uses_unblocker, unblocker=uses_unblocker
+        )
 
         try:
             await fetcher.init()

@@ -30,6 +30,8 @@ PAGE_TIMEOUT_MS = 60_000
 CHALLENGE_WAIT_MS = 20_000
 MAX_ATTEMPTS = 4
 RUN_DEADLINE_SECONDS = 240
+HTTP_TIMEOUT = 30
+UNBLOCKER_TIMEOUT = 90
 
 # Patchright's bundled Chromium carries the stealth patches, so it is tried first.
 PROFILES = (
@@ -44,9 +46,11 @@ def session_id():
 
 
 class AllegroFetcher:
-    def __init__(self, proxy_configuration, use_session=True):
+    def __init__(self, proxy_configuration, use_session=True, unblocker=False):
         self.proxy_configuration = proxy_configuration
         self.use_session = use_session
+        # Apify Unblocker terminates TLS to solve challenges, so its certificate cannot be verified.
+        self.unblocker = unblocker
         self.session = session_id()
         self.proxy_url = None
         self.http_failures = 0
@@ -88,8 +92,9 @@ class AllegroFetcher:
                 proxy=self.proxy_url,
                 impersonate='chrome',
                 stealthy_headers=True,
-                timeout=30,
-                retries=1,
+                timeout=UNBLOCKER_TIMEOUT if self.unblocker else HTTP_TIMEOUT,
+                retries=0,
+                verify=not self.unblocker,
                 headers={'accept-language': ACCEPT_LANGUAGE},
             )
             html = response.body.decode('utf-8', 'replace')
@@ -257,8 +262,8 @@ class AllegroFetcher:
 
         if self.proxy_url:
             hint = (
-                ' Check that the proxy group is available and still has traffic, '
-                'or set proxyConfiguration to another group or your own proxy URLs.'
+                ' Check the proxy group in the run log. On the Free plan use the UNBLOCKER group '
+                'in proxyConfiguration.apifyProxyGroups, or set your own proxy URLs.'
             )
         else:
             hint = (

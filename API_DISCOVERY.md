@@ -55,3 +55,15 @@ The 2026-10-26 no-proxy result no longer reproduces. Tested on Apify build 1.0.1
 | Apify Proxy `StaticUS3` | `200` with `__listing_StoreState`, HTTP and browser |
 
 Conclusion: the decision is made on the exit IP, so browser stealth cannot clear it and no proxy means no data. The actor now defaults to the Apify Proxy `StaticUS3` group (`input_schema.json` default and a code fallback for API runs that omit the field).
+
+## Update 2026-11-10: Free plan option is UNBLOCKER
+
+Static residential (`StaticUS3`) is a paid add-on, so it is not available on free accounts. Tested alternatives from the same Actor:
+
+| Group | Result |
+|---|---|
+| `UNBLOCKER` | `200` with `__listing_StoreState`, about 20 s per page. It terminates TLS, so the HTTP client must use `verify=False`; the Actor does this automatically |
+| `RESIDENTIAL` | `403` on every exit, HTTP and browser |
+| Datacenter (`useApifyProxy` without a group) | `403`, browser navigations time out |
+
+Unblocker is billed at $1.5 per 1,000 requests on every plan, one listing page is one request, and free accounts get $5 of monthly usage. Use `apifyProxyGroups: ["UNBLOCKER"]` in `proxyConfiguration` on the Free plan.
