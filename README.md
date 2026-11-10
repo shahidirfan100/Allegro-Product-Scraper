@@ -45,7 +45,7 @@ Allegro Product Scraper collects product offers from Allegro.pl, a large Polish 
 1. Open the Actor on Apify Store.
 2. Paste an Allegro listing, category, or offer URL in **Allegro URL**, or leave it empty and enter a **Keyword**.
 3. Set **Maximum results** and **Maximum pages** for the run.
-4. Leave the proxy field empty for a normal run. Add an Apify Proxy group or your own proxy URLs only if Allegro challenges the run.
+4. Leave the proxy field at its default Apify Proxy `StaticUS3` group. Allegro blocks direct and datacenter exits, so the residential group is what keeps runs working.
 5. Run the Actor and open the dataset when the run finishes.
 
 When both an Allegro URL and a keyword are present, the URL wins. The keyword is ignored.
@@ -58,7 +58,7 @@ When both an Allegro URL and a keyword are present, the URL wins. The keyword is
 | `keyword` | String | No | `tabletki do zmywarki` | Search phrase used when no URL is provided. |
 | `results_wanted` | Integer | No | `20` | Maximum number of offers to save. |
 | `max_pages` | Integer | No | `10` | Maximum listing pages to request, starting from the page in the URL. |
-| `proxyConfiguration` | Object | No | No proxy | Optional proxy settings for challenged runs. |
+| `proxyConfiguration` | Object | No | Apify Proxy, `StaticUS3` group | Proxy settings. Allegro blocks direct and datacenter exits, so the residential group is the default. |
 
 ## Output Data
 
@@ -180,8 +180,8 @@ Add custom proxy URLs only when a run needs a different exit IP.
 - Start with a small `results_wanted` value to confirm the URL and page settings.
 - Use a complete Allegro listing URL when you need exact filters, sorting, or a category.
 - Allegro returns about 60 offers per listing page and limits deep pagination, so very large runs should use several narrower searches.
-- The Actor runs without a proxy by default. Add a proxy group only if Allegro challenges the run.
-- If a run is challenged, switch to another proxy group in your Apify account before increasing the result limit.
+- The Actor uses the Apify Proxy `StaticUS3` group by default because Allegro blocks direct and datacenter exits.
+- If a run still hits a challenge, check that the proxy group is available and has traffic left before raising the result limit.
 - Some fields are missing when the source page does not publish them. Check several offers before assuming a field is broken.
 - Use the URL of the listing page, not a browser-specific or shortened link.
 
@@ -217,7 +217,7 @@ Allegro does not publish every field on every page. For example, a listing card 
 
 ### Why do I get fewer results than requested?
 
-The search may have fewer matching offers, the page cap may be reached, or Allegro may challenge some requests. Check the run log and try a narrower search. If a challenge repeats, add a proxy group and run again.
+The search may have fewer matching offers, the page cap may be reached, or Allegro may challenge some requests. Check the run log. If a challenge repeats, verify the proxy group is available and has traffic left, then run again.
 
 ### Can I run this Actor on a schedule?
 
@@ -229,7 +229,7 @@ Yes. Apify datasets can be downloaded as CSV, Excel, JSON, XML, and other suppor
 
 ### Do I need a proxy?
 
-No. The Actor runs without a proxy by default and handles Allegro's challenge in the browser. Add an Apify Proxy group or your own proxy URLs if a run is challenged repeatedly.
+Yes. Allegro blocks direct and datacenter exits, so the Actor uses the Apify Proxy `StaticUS3` group by default. Keep the default, or enter your own residential proxy URLs if you have a better exit.
 
 ### Do I need to write code to run the Actor?
 

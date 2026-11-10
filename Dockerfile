@@ -1,17 +1,12 @@
-FROM apify/actor-node-playwright-chrome:24-1.64.1
+FROM apify/actor-python-playwright:3.14
 
-COPY --chown=myuser:myuser package*.json Dockerfile ./
-
-RUN npm --quiet set progress=false \
-    && npm install --omit=dev \
-    && echo "Installed NPM packages:" \
-    && (npm list --omit=dev --all || true) \
-    && echo "Node.js version:" \
-    && node --version \
-    && echo "NPM version:" \
-    && npm --version \
-    && rm -r ~/.npm
+COPY --chown=myuser:myuser requirements.txt ./
+# Scrapling drives Patchright, which ships its own patched Chromium. Installing it
+# here keeps the stealth profile available inside the image.
+RUN pip install --no-cache-dir -r requirements.txt \
+    && python -m patchright install --no-progress chromium
 
 COPY --chown=myuser:myuser . ./
+RUN python -m compileall -q src/
 
-CMD ["node", "src/main.js"]
+CMD ["python", "-m", "src"]

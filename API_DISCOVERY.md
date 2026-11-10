@@ -40,3 +40,18 @@ Patchright passed DataDome from the Apify run without a proxy and with the optio
 - The actor rotates the browser profile after a failed browser attempt and retries up to four times. If a proxy is configured, it rotates both the proxy session and the browser profile. No-proxy runs can receive an intermittent DataDome challenge, and a fresh profile usually clears it.
 - Listing pages are accepted only when mapped offers exist, or when `availableCount` is zero.
 - If no offers are saved while `availableCount` is above zero, the run fails instead of returning an empty successful dataset.
+
+## Update 2026-11-10: exit IP is what Allegro blocks
+
+The 2026-10-26 no-proxy result no longer reproduces. Tested on Apify build 1.0.14, same listing URL:
+
+| Attempt | Result |
+|---|---|
+| Patchright bundled Chromium, headful | `403` DataDome block page, 1590 bytes |
+| Real Chrome, headful | `403` DataDome block page |
+| Bundled Chromium, headless | `403` DataDome block page |
+| Direct HTTP, Chrome TLS fingerprint | `403` |
+| Apify Proxy default (datacenter) | `403`, browser navigations time out |
+| Apify Proxy `StaticUS3` | `200` with `__listing_StoreState`, HTTP and browser |
+
+Conclusion: the decision is made on the exit IP, so browser stealth cannot clear it and no proxy means no data. The actor now defaults to the Apify Proxy `StaticUS3` group (`input_schema.json` default and a code fallback for API runs that omit the field).

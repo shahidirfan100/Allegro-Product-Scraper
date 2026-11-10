@@ -39,8 +39,12 @@
     "proxyConfiguration": {
       "title": "Proxy configuration",
       "type": "object",
-      "description": "No proxy is used by default. Add an Apify Proxy group or custom proxy URLs only if Allegro challenges a run.",
-      "editor": "proxy"
+      "description": "Apify Proxy with the StaticUS3 group is used by default, because Allegro blocks direct and datacenter exits. Keep it, or enter your own proxy URLs if you have a better exit.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": ["StaticUS3"]
+      }
     }
   },
   "required": [],
